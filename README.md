@@ -2,9 +2,22 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Routing
 
-In the project directory, you can run:
+In the project directory, There is routing is implmented here!
+
+-> www.something.com/route-1:  Totally different than normal page
+-> www.something.com/route-2:  Totally different than normal page
+    ## Sub-routing:
+    ------------------------------
+    -> www.something.com/route-2/cloth:  Totally different than normal page
+
+## install React-router-DOM
+
+npm i react-router-dom
+Fragment
+Link
+Outlet
 
 ### `npm start`
 
