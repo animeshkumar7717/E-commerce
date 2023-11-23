@@ -19,6 +19,10 @@ Fragment
 Link
 Outlet
 
+## The data is actually 1000 of different cateories specially in E-Commerce application.
+
+# Firebase is almost similar to the NoSql Databases such as mongoDB
+
 ### `npm start`
 
 Runs the app in the development mode.\
