@@ -9,7 +9,16 @@ import {
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { 
+  getFirestore,
+  doc, 
+  getDoc, 
+  setDoc, 
+  collection, 
+  writeBatch,
+  query,
+  getDocs,
+} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAUgIPPx0qRm95RYL6IGW9yq-1oYGDKQC8",
@@ -35,6 +44,43 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async(collectionKey, objectToAdd) => {
+  const collectionRef = collection(db, collectionKey);
+  // transation is that represent a success unit of work that to a database.
+  const batch = writeBatch(db);
+
+  objectToAdd.forEach((object)=>{
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object)
+  });
+
+  await batch.commit();
+
+  /**
+   * Animesh: $1000 => $900
+   * -100 
+   * 
+   * Successful transaction... If and only if, Animesh has $900 and Deepak has $1100 then and only them it a successful transation.
+   * 
+   * Deepak: $1000 => $1100
+   * +100
+   */
+}
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};
 
 export const createUserDocumentFromAuth = async (
   userAuth,
